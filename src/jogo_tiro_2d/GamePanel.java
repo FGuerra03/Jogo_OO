@@ -3,6 +3,7 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable, KeyListener{
     
@@ -16,7 +17,8 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     private int FPS = 40;
     private double averageFPS;
     
-    private Player player;
+    public static Player player;
+    public static ArrayList <Bullet> bullets;
     
     //Construtor
     public GamePanel(){
@@ -45,6 +47,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         g = (Graphics2D) image.getGraphics();
         
         player = new Player();
+        bullets = new ArrayList<>();
         
         long startTime;
         long URDTimeMills;
@@ -84,6 +87,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     
     private void gameUpdate() {
         player.update();
+        
+        for (int i = 0; i < bullets.size(); i++){
+            boolean remove = bullets.get(i).update();
+            if (remove) {
+                bullets.remove(i);
+                i--;
+            }
+        }
     }
 
     private void gameRender(){
@@ -93,6 +104,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         g.drawString("FPS: " + averageFPS, 0, 15);
         
         player.draw(g);
+        int i = 0;
+        
+        for (int j = 0; j < bullets.size() ; j++){
+            bullets.get(j).draw(g);
+        }
     }
     
     private void gameDraw(){
@@ -122,6 +138,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         if(keyCode == KeyEvent.VK_DOWN){
             player.setDown(true);
         }
+        if(keyCode == KeyEvent.VK_V){
+            player.setFiring(true);
+        }
     }
 
     @Override
@@ -139,6 +158,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         }
         if(keyCode == KeyEvent.VK_DOWN){
             player.setDown(false);
+        }
+         if(keyCode == KeyEvent.VK_V){
+            player.setFiring(false);
         }
     }
 }

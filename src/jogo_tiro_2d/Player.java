@@ -16,6 +16,10 @@ public class Player extends GamePanel {
     private boolean up;
     private boolean down;
     
+    private boolean firing;
+    private long firingTimer;
+    private long firingDelay;
+    
     private int lives;
     
     private Color color1;
@@ -35,6 +39,10 @@ public class Player extends GamePanel {
 
         color1 = Color.green;
         color2 = Color.RED;
+        
+        firing = false;
+        firingTimer = System.nanoTime();
+        firingDelay = 200;
     }
     
     //Funcoes
@@ -70,6 +78,14 @@ public class Player extends GamePanel {
         
         dx = 0;
         dy = 0;
+        
+        if(firing) {
+            long elapsed = System.nanoTime() - firingTimer / 1000000;
+            if (elapsed > firingDelay){
+                boolean add = GamePanel.bullets.add(new Bullet(270, x, y));
+                firingTimer = System.nanoTime();
+            }
+        }
     }
     
     public void draw(Graphics2D g){
@@ -80,5 +96,9 @@ public class Player extends GamePanel {
         g.setColor(color1.darker());
         g.drawOval(x - r, y - r, 2 * r, 2 * r);
         g.setStroke(new BasicStroke(1));
+    }
+
+    void setFiring(boolean b) {
+        firing = b;
     }
 }
