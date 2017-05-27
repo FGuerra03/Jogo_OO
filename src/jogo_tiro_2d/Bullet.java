@@ -15,6 +15,7 @@ public class Bullet extends GamePanel {
     private Color color1; 
 
     Bullet(double angle, int x, int y) {
+        this.x = x;
         this.y = y;
         r = 2;
         
@@ -32,8 +33,11 @@ public class Bullet extends GamePanel {
         x += dx;
         y += dy;
         
-        return x < -r || x > GamePanel.WIDTH + r||
-                y < -r || y > GamePanel.HEIGHT +r;
+        if(x < -r || x > GamePanel.WIDTH + r || y < - r || y > GamePanel.HEIGHT + r){
+            return true;
+        }
+        
+        return false;
     }
     
     public void draw(Graphics2D g) {

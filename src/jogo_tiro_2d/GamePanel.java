@@ -3,7 +3,8 @@ import javax.swing.JPanel;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
-import java.util.ArrayList;
+import java.util. *;
+
 
 public class GamePanel extends JPanel implements Runnable, KeyListener{
     
@@ -18,7 +19,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     private double averageFPS;
     
     public static Player player;
-    public static ArrayList <Bullet> bullets;
+    public static ArrayList<Bullet> bullets;
     
     //Construtor
     public GamePanel(){
@@ -47,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         g = (Graphics2D) image.getGraphics();
         
         player = new Player();
-        bullets = new ArrayList<>();
+        bullets = new ArrayList<Bullet>();
         
         long startTime;
         long URDTimeMills;
@@ -126,19 +127,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     public void keyPressed(KeyEvent key){
         int keyCode;
         keyCode = key.getKeyCode();
-        if(keyCode == KeyEvent.VK_LEFT){
+        if(keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A ){
             player.setLeft(true);
         }
-        if(keyCode == KeyEvent.VK_RIGHT){
+        if(keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D){
             player.setRight(true);
         }
-        if(keyCode == KeyEvent.VK_UP){
+        if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W){
             player.setUp(true);
         }
-        if(keyCode == KeyEvent.VK_DOWN){
+        if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S){
             player.setDown(true);
         }
-        if(keyCode == KeyEvent.VK_V){
+        if(keyCode == KeyEvent.VK_Z || keyCode == KeyEvent.VK_SPACE){
             player.setFiring(true);
         }
     }
@@ -147,19 +148,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     public void keyReleased(KeyEvent key) {
         int keyCode;
         keyCode = key.getKeyCode();
-        if(keyCode == KeyEvent.VK_LEFT){
+        if(keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A){
             player.setLeft(false);
         }
-        if(keyCode == KeyEvent.VK_RIGHT){
+        if(keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D){
             player.setRight(false);
         }
-        if(keyCode == KeyEvent.VK_UP){
+        if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W){
             player.setUp(false);
         }
-        if(keyCode == KeyEvent.VK_DOWN){
+        if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S){
             player.setDown(false);
         }
-         if(keyCode == KeyEvent.VK_V){
+         if(keyCode == KeyEvent.VK_Z || keyCode == KeyEvent.VK_SPACE){
             player.setFiring(false);
         }
     }

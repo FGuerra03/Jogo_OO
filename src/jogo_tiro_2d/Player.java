@@ -52,6 +52,9 @@ public class Player extends GamePanel {
     public void setUp(boolean b) {up = b; }
     public void setDown(boolean b) {down = b; }
     
+    void setFiring(boolean b) {
+        firing = b;
+    }
     
     public void update(){
         
@@ -82,7 +85,7 @@ public class Player extends GamePanel {
         if(firing) {
             long elapsed = System.nanoTime() - firingTimer / 1000000;
             if (elapsed > firingDelay){
-                boolean add = GamePanel.bullets.add(new Bullet(270, x, y));
+                GamePanel.bullets.add(new Bullet(270, x, y));
                 firingTimer = System.nanoTime();
             }
         }
@@ -98,7 +101,5 @@ public class Player extends GamePanel {
         g.setStroke(new BasicStroke(1));
     }
 
-    void setFiring(boolean b) {
-        firing = b;
-    }
+    
 }
