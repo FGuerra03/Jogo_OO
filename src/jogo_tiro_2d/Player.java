@@ -37,7 +37,7 @@ public class Player extends GamePanel {
         
         lives = 3;
 
-        color1 = Color.green;
+        color1 = Color.WHITE;
         color2 = Color.RED;
         
         firing = false;

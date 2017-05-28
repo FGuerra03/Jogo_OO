@@ -20,6 +20,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     
     public static Player player;
     public static ArrayList<Bullet> bullets;
+    public static ArrayList<Enemy> enemies;
     
     //Construtor
     public GamePanel(){
@@ -49,6 +50,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         
         player = new Player();
         bullets = new ArrayList<Bullet>();
+        enemies = new ArrayList<Enemy>();
+        for (int k = 0; k < 5; k++){
+            enemies.add(new Enemy(1, 1));
+        }
         
         long startTime;
         long URDTimeMills;
@@ -87,8 +92,11 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     }
     
     private void gameUpdate() {
+        
+        //Atualizacao do player
         player.update();
         
+        //Atualizacao das balas
         for (int i = 0; i < bullets.size(); i++){
             boolean remove = bullets.get(i).update();
             if (remove) {
@@ -96,6 +104,49 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
                 i--;
             }
         }
+        int z;
+        int i;
+        
+        //Atualizacao inimigos
+        for (i = 0; i < enemies.size(); i++){
+            enemies.get(i).update();
+        }
+        
+        //Colisao bullet-enemy
+        for (int k = 0; k < bullets.size(); k++){
+            
+            Bullet b = bullets.get(k);
+            double bx = b.getx();
+            double by = b.gety();
+            double br = b.getr();
+            
+            for (int j = 0; j < enemies.size(); j++){
+                Enemy e = enemies.get(j);
+                double ex = e.getx();
+                double ey = e.gety();
+                double er = e.getr();
+                
+                double dx = bx - ex;
+                double dy = by - ey;
+                double dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < br + er){
+                    e.hit();
+                    bullets.remove(k);
+                    k--;
+                    break;
+                }
+            }
+        }
+        
+        //Checar inimigos
+        for (int l = 0; l < enemies.size(); l++){
+            if (enemies.get(l).isDead()) {
+                enemies.remove(l);
+                l--;
+            }
+        }
+        
     }
 
     private void gameRender(){
@@ -104,11 +155,19 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         g.setColor(Color.GREEN);
         g.drawString("FPS: " + averageFPS, 0, 15);
         
+        //drar player
         player.draw(g);
         int i = 0;
         
+        //draw bullets 
         for (int j = 0; j < bullets.size() ; j++){
             bullets.get(j).draw(g);
+        }
+        
+        
+        //draw enemy
+         for (i = 0; i < enemies.size(); i++){
+            enemies.get(i).draw(g);
         }
     }
     
@@ -139,9 +198,9 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S){
             player.setDown(true);
         }
-        if(keyCode == KeyEvent.VK_Z || keyCode == KeyEvent.VK_SPACE){
+        if(keyCode == KeyEvent.VK_Z || keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_ENTER){
             player.setFiring(true);
-        }
+        }   
     }
 
     @Override
@@ -160,7 +219,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S){
             player.setDown(false);
         }
-         if(keyCode == KeyEvent.VK_Z || keyCode == KeyEvent.VK_SPACE){
+         if(keyCode == KeyEvent.VK_Z || keyCode == KeyEvent.VK_SPACE || keyCode == KeyEvent.VK_ENTER){
             player.setFiring(false);
         }
     }

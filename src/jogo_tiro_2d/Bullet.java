@@ -14,6 +14,7 @@ public class Bullet extends GamePanel {
     
     private Color color1; 
 
+    //Construtor
     Bullet(double angle, int x, int y) {
         this.x = x;
         this.y = y;
@@ -25,10 +26,15 @@ public class Bullet extends GamePanel {
         dy = Math.sin(rad) * speed;
          
         
-        color1 = Color.BLUE;
+        color1 = Color.red;
     }
     
-
+    //Funcoes
+    
+    public double getx() { return x; }
+    public double gety() { return y; }
+    public double getr() { return r; }
+    
     public boolean update (){
         x += dx;
         y += dy;
