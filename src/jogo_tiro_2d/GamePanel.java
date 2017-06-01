@@ -15,13 +15,18 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     private boolean running;
     private BufferedImage image;
     private Graphics2D g;
-    private int FPS = 40;
+    private final int FPS = 40;
     private double averageFPS;
     
     public static Player player;
     public static ArrayList<Bullet> bullets;
     public static ArrayList<Enemy> enemies;
     
+    private long waveStartTimer;
+    private long waveStartTimerDiff;
+    private int waveNumber;
+    private boolean waveStart;
+    private int waveDelay = 2000;
     //Construtor
     public GamePanel(){
         super();
@@ -47,14 +52,15 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         
         image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         g = (Graphics2D) image.getGraphics();
-        
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         player = new Player();
-        bullets = new ArrayList<Bullet>();
-        enemies = new ArrayList<Enemy>();
-        for (int k = 0; k < 5; k++){
-            enemies.add(new Enemy(1, 1));
-        }
-        
+        bullets = new ArrayList<>();
+        enemies = new ArrayList<>();
+        waveStartTimer = 0;
+        waveStartTimerDiff = 0;
+        waveStart = true;
+        waveNumber = 0;
         long startTime;
         long URDTimeMills;
         long waitTime;
@@ -92,6 +98,26 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     }
     
     private void gameUpdate() {
+        
+        //
+        if (waveStartTimer == 0 && enemies.isEmpty()) {
+            waveNumber++;
+            waveStart = false;
+            waveStartTimer = System.nanoTime();
+        }
+        else {
+            waveStartTimerDiff = (System.nanoTime() - waveStartTimer) / 1000000;
+            if(waveStartTimerDiff > waveDelay){
+                waveStart = true;
+                waveStartTimer = 0;
+                waveStartTimerDiff = 0;
+            }
+        }
+        
+        //Cria inimigos
+        if (waveStart && enemies.isEmpty()){
+            createNewEnemies();
+        }
         
         //Atualizacao do player
         player.update();
@@ -149,32 +175,74 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         
     }
 
+    @SuppressWarnings("empty-statement")
     private void gameRender(){
         g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
-        g.setColor(Color.GREEN);
-        g.drawString("FPS: " + averageFPS, 0, 15);
+        
+        /*g.setColor(Color.GREEN);
+        g.drawString("FPS: " + averageFPS, 0, 15);*/
         
         //drar player
         player.draw(g);
-        int i = 0;
         
         //draw bullets 
         for (int j = 0; j < bullets.size() ; j++){
             bullets.get(j).draw(g);
         }
+        int i;
         
         
         //draw enemy
          for (i = 0; i < enemies.size(); i++){
-            enemies.get(i).draw(g);
+            enemies.get(i).Make(g);
         }
+        
+        // draw Wave
+        if (waveStartTimer != 0){
+            g.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+            String s = "-  W A V E " + waveNumber + "   -";
+            int length = (int) g.getFontMetrics().getStringBounds(s, g).getWidth();
+            int alpha = (int) (255 * Math.sin(3.14 * waveStartTimerDiff / waveDelay));
+            if (alpha > 255) alpha = 255;
+            g.setColor(new Color(255, 255, 255, alpha));
+            g.drawString(s, WIDTH / 2 - length / 2, HEIGHT /2);
+        }
+        
+        // Draw vida do jogador
+        for(int l = 0; l < player.getLives(); l++){
+        g.setColor(Color.GREEN);
+        g.fillOval(20 + (20 * i), 20, player.getr() * 2, player.getr() * 2 );
+        g.setStroke(new BasicStroke(3));
+        g.setColor(Color.GREEN.darker());
+        g.drawOval(20 + (20 * i), 20, player.getr() * 2, player.getr() * 2 );
+        g.setStroke(new BasicStroke(1));
+    }
     }
     
     private void gameDraw(){
         Graphics g2 = this.getGraphics();
         g2.drawImage(image, 0, 0, null);
         g2.dispose();
+    }
+    
+    private void createNewEnemies(){
+        
+        enemies.clear();
+        Enemy e;
+        
+        if(waveNumber == 1) {
+            for(int i = 0; i < 4; i++) {
+                enemies.add(new Enemy (1, 1));
+            }
+        }
+        
+        if(waveNumber == 2) {
+            for(int i = 0; i < 8; i++) {
+                enemies.add(new Enemy (1, 1));
+            }
+        }
+        
     }
     
     @Override

@@ -37,7 +37,7 @@ public class Player extends GamePanel {
         
         lives = 3;
 
-        color1 = Color.WHITE;
+        color1 = Color.GREEN;
         color2 = Color.RED;
         
         firing = false;
@@ -46,6 +46,10 @@ public class Player extends GamePanel {
     }
     
     //Funcoes
+    public int getx() {return x;}
+    public int gety() {return y;}
+    public int getr() {return r;}
+    public int getLives(){return lives;}
     
     public void setLeft(boolean b) {left = b; }
     public void setRight(boolean b) {right = b; }

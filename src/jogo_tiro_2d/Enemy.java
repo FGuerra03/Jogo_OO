@@ -1,7 +1,7 @@
 package jogo_tiro_2d;
 
 import java.awt. *;
-public class Enemy extends GamePanel {
+public class Enemy extends GamePanel  {
     
     //Atributos
     private double x;
@@ -63,8 +63,8 @@ public class Enemy extends GamePanel {
     }
     
     public void update(){
-        x += dx;
-        y += dy;
+        x += dx * 0.3;
+        y += dy * 0.3;
         
         if(!ready){
             if(x > r && r < GamePanel.WIDTH - r && y > r && y < GamePanel.HEIGHT -r){
@@ -80,7 +80,7 @@ public class Enemy extends GamePanel {
         
     }
   
-    public void draw(Graphics2D h){
+    public void Make(Graphics2D h){
         
         h.setColor(color1);
         h.fillOval((int) (x-r), (int) (y - r), 2 * r, 2 * r);
