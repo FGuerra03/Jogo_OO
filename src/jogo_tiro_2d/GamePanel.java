@@ -169,7 +169,30 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         for (int l = 0; l < enemies.size(); l++){
             if (enemies.get(l).isDead()) {
                 enemies.remove(l);
+                player.addScore(e.getType() + e.getRank());
                 l--;
+            }
+        }
+        
+        //Colisao inimigo player
+        if(!player.isRecovering()){
+            int px = player.getx();
+            int py = player.gety();
+            int pr = player.getr();
+            
+            for (int m = 0; m < enemies.size(); m++){
+                Enemy e = enemies.get(m);
+                double ex = e.getx();
+                double ey = e.gety();
+                double er = e.getr();
+                
+                double dx = px - ex;
+                double dy = py - ey;
+                double dist = Math.sqrt(dx * dx + dy * dy);
+                
+                if (dist < pr +er){
+                    player.loseLife();
+                }
             }
         }
         
@@ -177,13 +200,13 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
     @SuppressWarnings("empty-statement")
     private void gameRender(){
-        g.setColor(Color.BLACK);
+        g.setColor(Color.PINK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         
         /*g.setColor(Color.GREEN);
         g.drawString("FPS: " + averageFPS, 0, 15);*/
         
-        //drar player
+        //draw player
         player.draw(g);
         
         //draw bullets 
@@ -218,6 +241,10 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         g.drawOval(20 + (20 * i), 20, player.getr() * 2, player.getr() * 2 );
         g.setStroke(new BasicStroke(1));
     }
+        //Draw Score
+        g.setColor(Color.GREEN);
+        g.setFont(new Font("Sans Serif", Font.PLAIN, 14));
+        g.drawString("Score: " + player.getScore(), WIDTH - 100, 30);
     }
     
     private void gameDraw(){

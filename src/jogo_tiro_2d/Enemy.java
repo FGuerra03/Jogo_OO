@@ -29,7 +29,7 @@ public class Enemy extends GamePanel  {
         
         //Inimigo padrao
         if (type == 1){
-            color1 = Color.BLUE;
+            color1 = Color.WHITE;
             if (rank == 1){
                 speed = 2;
                  rad = 5;
@@ -54,6 +54,8 @@ public class Enemy extends GamePanel  {
     public double getx() { return x; }
     public double gety() { return y; }
     public double getr() { return r; }
+    public int getType() { return type; }
+    public int getRank() { return rank; }
     public boolean isDead(){return dead;}
     public void hit () {
         health --;
@@ -82,7 +84,7 @@ public class Enemy extends GamePanel  {
   
     public void Make(Graphics2D h){
         
-        h.setColor(color1);
+        h.setColor(Color.ORANGE);
         h.fillOval((int) (x-r), (int) (y - r), 2 * r, 2 * r);
         
         h.setStroke(new BasicStroke(3));
