@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
     public static Player player;
     public static ArrayList<Bullet> bullets;
     public static ArrayList<Enemy> enemies;
+    public static ArrayList<PowerUp> powerups;
     
     private long waveStartTimer;
     private long waveStartTimerDiff;
@@ -54,9 +55,12 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         g = (Graphics2D) image.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        
         player = new Player();
         bullets = new ArrayList<>();
         enemies = new ArrayList<>();
+        powerups = new ArrayList<>();
+        
         waveStartTimer = 0;
         waveStartTimerDiff = 0;
         waveStart = true;
@@ -168,8 +172,14 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
         //Checar inimigos
         for (int l = 0; l < enemies.size(); l++){
             if (enemies.get(l).isDead()) {
-                enemies.remove(l);
+                
+                //chance for power up
+                double rand = Math.random();
+                
+                if(rand < 0.001) powerups.add(new(1, e.getx(), e.gety()));
+                else if (rand <)
                 player.addScore(e.getType() + e.getRank());
+                enemies.remove(l);
                 l--;
             }
         }
@@ -200,7 +210,7 @@ public class GamePanel extends JPanel implements Runnable, KeyListener{
 
     @SuppressWarnings("empty-statement")
     private void gameRender(){
-        g.setColor(Color.PINK);
+        g.setColor(Color.BLACK);
         g.fillRect(0, 0, WIDTH, HEIGHT);
         
         /*g.setColor(Color.GREEN);
