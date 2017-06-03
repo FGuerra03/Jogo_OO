@@ -37,6 +37,25 @@ public class Enemy extends GamePanel  {
             }
         }
         
+        //Mais forte, mais rapido
+        if (type == 2){
+            color1 = Color.RED;
+            if(rank == 1){
+                speed = 3;
+                r = 5;
+                health = 2;
+            }
+        }
+        
+        //Devagar mas resistente
+        if (type == 3) {
+            color1 = Color.lightGray;
+            if(rank == 1){
+                speed = 1.5;
+                r = 5;
+                health = 5;
+            }
+        }
         x = Math.random() * GamePanel.WIDTH /2 + GamePanel.WIDTH / 4;
         y = -r;
         
