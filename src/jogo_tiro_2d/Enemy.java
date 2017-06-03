@@ -25,6 +25,7 @@ public class Enemy extends GamePanel  {
     private boolean hit;
     private long hitTimer;
     
+    private boolean slow;
     //Construtor
     public Enemy (int type, int rank){
         this.type = type;
@@ -64,6 +65,21 @@ public class Enemy extends GamePanel  {
                 r = 5;
                 health = 2;
             }
+            if (rank == 2){
+                speed = 3;
+                r = 10;
+                health = 3;
+            }
+            if (rank == 3){
+                speed = 2.5;
+                r = 20;
+                health = 3;
+            }
+            if (rank == 4){
+                speed = 2.5;
+                r = 30;
+                health = 4;
+            }
         }
         
         //Devagar mas resistente
@@ -73,6 +89,22 @@ public class Enemy extends GamePanel  {
                 speed = 1.5;
                 r = 5;
                 health = 5;
+            }
+            if (rank == 2){
+                speed = 1.5;
+                r = 10;
+                health = 6;
+            }
+            if (rank == 3){
+                speed = 1.5;
+                r = 25;
+                health = 7;
+            }
+            if (rank == 4){
+                speed = 1.5;
+                r = 45;
+                health = 8;
+                
             }
         }
         x = Math.random() * GamePanel.WIDTH /2 + GamePanel.WIDTH / 4;
@@ -93,9 +125,11 @@ public class Enemy extends GamePanel  {
     //Funcoes 
     public double getx() { return x; }
     public double gety() { return y; }
-    public double getr() { return r; }
+    public int getr() { return r; }
     public int getType() { return type; }
     public int getRank() { return rank; }
+    public void setSlow(boolean b)  {slow = b;}
+    
     public boolean isDead(){return dead;}
     public void hit () {
         health --;
@@ -113,7 +147,12 @@ public class Enemy extends GamePanel  {
             if(type == 1){
                 amount = 3;
             }
-            
+            if(type == 2){
+                amount = 3;
+            }
+            if(type == 3){
+                amount = 4;
+            }
             for (int i = 0; i < amount; i++){
                 
                 Enemy e = new Enemy(getType(), getRank() -1);
@@ -135,9 +174,14 @@ public class Enemy extends GamePanel  {
     }
     
     public void update(){
-        x += dx * 0.3;
-        y += dy * 0.3;
-        
+        if(slow){
+            x += dx * 0.3;
+            y += dy * 0.3;
+        }
+        else{
+            x += dx ;
+            y += dy ;
+        }
         if(!ready){
             if(x > r && r < GamePanel.WIDTH - r && y > r && y < GamePanel.HEIGHT -r){
                 ready = true;
@@ -180,5 +224,9 @@ public class Enemy extends GamePanel  {
             g.setStroke(new BasicStroke(1));
         }
         
+    }
+
+    void draw(Graphics2D g) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

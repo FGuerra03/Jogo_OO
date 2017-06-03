@@ -3,7 +3,7 @@ import javax.swing.JFrame;
 public class Jogo_Tiro_2D {
     public static void main(String[] args) {
         
-        JFrame window = new JFrame("Teste 001");
+        JFrame window = new JFrame("EP2 OO 2017");
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         window.setContentPane(new GamePanel());
