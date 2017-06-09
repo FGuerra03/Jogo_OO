@@ -8,8 +8,8 @@ import java.util.*;
 public class GamePanel extends JPanel implements Runnable, KeyListener {
 	
     //Atributos
-    public static int WIDTH = 400;
-    public static int HEIGHT = 400;
+    public static int WIDTH = 410;
+    public static int HEIGHT = 450;
 	
     private Thread thread;
     private boolean running;
